@@ -10,6 +10,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 
 class Deploy implements ShouldQueue
@@ -33,7 +35,7 @@ class Deploy implements ShouldQueue
     public function middleware()
     {
         return [
-            new WithoutOverlapping('deployments', 10)
+            new ThrottlesExceptions(10)
         ];
     }
 }

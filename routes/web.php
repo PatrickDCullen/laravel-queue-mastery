@@ -21,14 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    Bus::chain([
-        new Deploy(),
-        function () {
-            Bus::batch([
-                // more jobs here
-                ])->dispatch();
-        }
-    ])->dispatch();
+    new Deploy();
 
     return view('welcome');
 });
