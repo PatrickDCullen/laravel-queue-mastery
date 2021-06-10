@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\ProcessPayment;
 use App\Jobs\SendWelcomeEmail;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    SendWelcomeEmail::dispatch();
+    foreach (range(1, 100) as $i) {
+        SendWelcomeEmail::dispatch();
+    }
+
+    ProcessPayment::dispatch()->onQueue('payments');
 
     return view('welcome');
 });
