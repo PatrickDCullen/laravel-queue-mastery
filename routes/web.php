@@ -6,6 +6,7 @@ use App\Jobs\RunTests;
 use App\Jobs\SendEmail;
 use App\Jobs\ProcessPayment;
 use App\Jobs\SendWelcomeEmail;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,15 +21,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $batch  = [
-        new PullRepo('laracasts/project1'),
-        new PullRepo('laracasts/project2'),
-        new PullRepo('laracasts/project3'),
-    ];
-
-    \Illuminate\Support\Facades\Bus::batch($batch)
-        ->allowFailures()
-        ->dispatch();
+    Bus::chain([
+        new Deploy(),
+        function () {
+            Bus::batch([
+                // more jobs here
+                ])->dispatch();
+        }
+    ])->dispatch();
 
     return view('welcome');
 });
