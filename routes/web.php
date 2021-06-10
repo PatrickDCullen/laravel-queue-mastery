@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    TestJob::dispatch('THIS_IS_THE_SECRET');
+    TestJob::dispatch();
 
     return view('welcome');
 });
