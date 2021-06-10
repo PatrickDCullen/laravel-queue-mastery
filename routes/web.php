@@ -1,5 +1,8 @@
 <?php
 
+use App\Jobs\Deploy;
+use App\Jobs\PullRepo;
+use App\Jobs\RunTests;
 use App\Jobs\SendEmail;
 use App\Jobs\ProcessPayment;
 use App\Jobs\SendWelcomeEmail;
@@ -17,6 +20,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    SendEmail::dispatch();
+    $batch  = [
+        new PullRepo('laracasts/project1'),
+        new PullRepo('laracasts/project2'),
+        new PullRepo('laracasts/project3'),
+    ];
+
+    \Illuminate\Support\Facades\Bus::batch($batch)
+        ->allowFailures()
+        ->dispatch();
+
     return view('welcome');
 });
