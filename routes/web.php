@@ -1,11 +1,14 @@
 <?php
 
 use App\Jobs\Deploy;
+use App\Models\User;
 use App\Jobs\PullRepo;
 use App\Jobs\RunTests;
 use App\Jobs\SendEmail;
 use App\Jobs\ProcessPayment;
 use App\Jobs\SendWelcomeEmail;
+use App\Jobs\TestJob;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    new Deploy();
+    TestJob::dispatch('THIS_IS_THE_SECRET');
 
     return view('welcome');
 });
